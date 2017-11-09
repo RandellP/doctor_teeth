@@ -26,6 +26,7 @@ module DoctorTeeth
     private
 
     # TODO: we probably need a class for run, suite, case, etc
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def extract_test_run(project, configuration, execution_id)
       start_time = nil
       @xml.xpath('//testsuites//properties//property').each do |property|
@@ -41,9 +42,9 @@ module DoctorTeeth
       # TODO
       # update the way that we deal with configuration to match what is done
       # when we convert elasticsearch data to the BigQuery schema
-      # we are assuming that the configuration is provided in the format of a hash
+      # we are assuming that the configuration is provided in a hash
 
-      # TODO allow extra stuff in xml like beaker?
+      # TODO: allow extra stuff in xml like beaker?
 
       conf = []
       configuration.each { |k, v| conf.push("#{k}=#{v}") }
@@ -67,6 +68,7 @@ module DoctorTeeth
       run
     end
 
+    # FIXME
     def extract_test_suites
       test_suites = []
 
@@ -83,9 +85,14 @@ module DoctorTeeth
       test_suites
     end
 
+    # FIXME
+    # rubocop:disable Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/CyclomaticComplexity
     def extract_test_cases(test_suite)
       test_cases = []
 
+      # FIXME
+      # rubocop:disable Metrics/BlockLength
       test_suite.children.each do |tc|
         next unless tc.name == 'testcase'
         test_case = {}

@@ -15,7 +15,8 @@ def location_for(place, fake_version = nil)
   end
 end
 
-# lint/unit tests, runs in travis with: bundle install --without system_tests development
+# lint/unit tests
+# runs in travis with: bundle install --without system_tests development
 gem 'rake'
 gem 'rspec'
 gem 'rubocop', '~> 0.49.1', require: false # used in tests. pinned

@@ -4,9 +4,9 @@ def is_ci?
   ENV['CI'] || ENV['JENKINS_URL'] || ENV['TRAVIS'] || ENV['APPVEYOR']
 end
 
-unless ENV['COVERAGE'] && ENV['COVERAGE'].to_s.downcase != 'true' &&
-    ENV['COVERAGE'].to_s.downcase != 'yes' &&
-    ENV['COVERAGE'].to_s.downcase != 'on'
+unless ENV['COVERAGE'] && !ENV['COVERAGE'].to_s.casecmp('true').zero? &&
+       !ENV['COVERAGE'].to_s.casecmp('yes').zero? &&
+       !ENV['COVERAGE'].to_s.casecmp('on').zero?
 
   # coveralls prevents local simplecov from running (facepalm)
   if is_ci?

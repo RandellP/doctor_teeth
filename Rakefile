@@ -15,6 +15,8 @@ namespace :gem do
 end
 
 task yard: :'docs:yard'
+
+# rubocop:disable Metrics/BlockLength
 namespace :docs do
   # docs:yard task
   YARD::Rake::YardocTask.new
@@ -54,11 +56,14 @@ namespace :docs do
 end
 
 namespace :test do
-  RuboCop::RakeTask.new
+  RuboCop::RakeTask.new do |task|
+    task.options = ['--debug']
+  end
 
   begin
     require 'rspec/core/rake_task'
     RSpec::Core::RakeTask.new(:spec)
+  # rubocop:disable Lint/HandleExceptions
   rescue LoadError
   end
 end
