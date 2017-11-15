@@ -71,6 +71,7 @@ namespace :test do
   begin
     require 'rspec/core/rake_task'
     RSpec::Core::RakeTask.new(:spec)
+    puts ENV['TRAVIS_JOB_ID']
   # if rspec isn't available, we can still use this Rakefile
   rescue LoadError
   end

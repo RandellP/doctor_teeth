@@ -1,14 +1,38 @@
 language: ruby
+
 git:
     depth: 3
-cache: bundler
-bundler_args: --without development
+
+services:
+    - docker
+
+before_install:
+    - docker info
+    # centos7 with some version of _our_ bundle installed
+    - docker pull us.gcr.io/slv-public/doctor_teeth
+    - echo $TRAVIS_REPO_SLUG  $TRAVIS_JOB_ID
+
+# required to prevent the host bundle install
+install: true
+
+# we set CI=true so coveralls attempts to send the data
+# we must send in the travis env vars, including COVERALLS_REPO_TOKEN
+#   so coveralls will work
+# this env is set in the travis doctor_teeth project settings
+#   it's the doctor_teeth api token, it cannot be recovered
 script:
-    - "bundle exec rake $CHECK"
+  - >
+    docker run -it
+    --env CI=true
+    --env COVERALLS_REPO_TOKEN
+    --env TRAVIS_JOB_ID
+    --volume $(pwd):/doctor_teeth
+    us.gcr.io/slv-public/doctor_teeth /bin/bash -c
+    "bundle update; bundle exec rake $CHECK"
+
 notifications:
     email: false
-rvm:
-    - 2.4.0
+
 env:
     - "CHECK=docs:verify"
     # FIXME: turn this back on after more testing and refactor away cop issues

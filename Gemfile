@@ -34,6 +34,7 @@ end
 
 group :development do
   gem 'bundler' # bundler rake tasks
+  gem 'travis' #  encrypt secrets, like coveralls api token
 end
 
 local_gemfile = "#{__FILE__}.local"
